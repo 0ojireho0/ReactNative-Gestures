@@ -4,6 +4,10 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import DragAndDrop from "volkeno-react-native-drag-drop";
 import billGates from '../assets/bill_gates.jpg'
 import elonMusk from '../assets/elon_musk.jpg'
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { FlatList } from "react-native";
+import { SafeAreaView } from "react-native";
+
 
 export default function TryImage() {
   const [items, setItems] = useState([
@@ -99,10 +103,28 @@ export default function TryImage() {
   ]);
 
 
-  const [imagePath, setImagePath] = useState("")
+  const [showFolder, setShowFolder] = useState(false)
+  const [getImages, setGetImages] = useState([])
+
+
+  const pressFolder = (imgItems) =>{
+    setShowFolder(true)
+    console.log(`This is imgItems: ${imgItems}`)
+    console.log(`This is imgItems: ${JSON.stringify(imgItems)}`)
+    setGetImages(imgItems)
+  }
+
+  const pressExitFolder = () =>{
+    setShowFolder(false)
+  }
+  
+
+
+  //console.log(showFolder)
 
 
   return (
+    <>
     <DragAndDrop
       style={styles.container}
       contentContainerStyle={styles.contentContainerStyle}
@@ -134,23 +156,53 @@ export default function TryImage() {
       renderZone={(zone, children, hover) => {
        //console.log([zone.items?.[0].imgPath])
        console.log([zone.items])
+       
         return (
           <View
             style={{
               ...styles.dragZoneStyle,
               backgroundColor: hover ? "#E2E2E2" : "#FFF",
-            }}
+            }
+            }
           >
             <Text styles={styles.dragZoneTextStyle}>{zone.text}</Text>
-            {children && <View style={styles.dragItemStyle}>
-            <Image source={zone.items?.[0].imgPath} style={{width: 30, height: 30}} />
-            <Text style={styles.dragItemTextStyle}>{zone.items?.[0].text}</Text>
-          </View>}
+              {children && 
+              <TouchableOpacity onPress={()=> pressFolder(zone.items)}>
+                <View style={styles.dragItemStyle}>
+                  <Image source={zone.items?.[0].imgPath} style={{width: 30, height: 30}} />
+                  <Text style={styles.dragItemTextStyle}>{zone.items?.[0].text}</Text>
+                </View>
+              </TouchableOpacity>}
           </View>
+         
         );
       }}
       
     />
+
+  {showFolder && 
+  <>
+  <SafeAreaView style={styles.containerSafeAreaView}>
+  <Text onPress={pressExitFolder} style={{marginLeft: 'auto', marginRight: 10}}>X</Text>
+    <FlatList 
+    data={getImages}
+    renderItem={({item})=>
+      <View>
+        <Image source={item.imgPath} style={{width: 30, height:30}} />
+        <Text>{item.text}</Text>
+      </View>
+    } 
+    keyExtractor={item => item.id}
+    />
+  </SafeAreaView>
+
+
+ 
+
+  </>}
+      
+
+  </>
   );
 }
 
@@ -207,4 +259,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     top: "50%",
   },
+  showFolderContainer: {
+    flex: 1
+  },
+  containerSafeAreaView:{
+    flex: 1,
+  }
 });
