@@ -156,6 +156,7 @@ export default function TryImage() {
       renderZone={(zone, children, hover) => {
        //console.log([zone.items?.[0].imgPath])
        console.log([zone.items])
+
        
         return (
           <View
@@ -169,8 +170,8 @@ export default function TryImage() {
               {children && 
               <TouchableOpacity onPress={()=> pressFolder(zone.items)}>
                 <View style={styles.dragItemStyle}>
-                  <Image source={zone.items?.[0].imgPath} style={{width: 30, height: 30}} />
-                  <Text style={styles.dragItemTextStyle}>{zone.items?.[0].text}</Text>
+                  <Image source={zone.items?.length > 0 && zone.items[zone.items.length -1].imgPath} style={{width: 30, height: 30}} />
+                  <Text style={styles.dragItemTextStyle}>{zone.items?.length > 0 && zone.items[zone.items.length - 1].text}</Text>
                 </View>
               </TouchableOpacity>}
           </View>
