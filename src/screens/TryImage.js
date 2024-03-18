@@ -90,15 +90,16 @@ export default function TryImage() {
     {
       id: 1,
       text: "Test zone 1",
-      items: [{ id: 5, text: "Test existing item 5", imgPath: elonMusk }],
+     
     },
     {
       id: 2,
       text: "Test zone 2",
     },
   ]);
-  console.log(zones[0].items[0])
 
+
+  const [imagePath, setImagePath] = useState("")
 
 
   return (
@@ -115,9 +116,13 @@ export default function TryImage() {
         setItems(items);
         setZones(zones);
       }}
+      
      
       itemsInZoneStyle={styles.itemsInZoneStyle}
       renderItem={(item) => {
+    
+
+
         return (
           <View style={styles.dragItemStyle}>
             <Image source={item.imgPath} style={{width: 30, height: 30}} />
@@ -126,9 +131,9 @@ export default function TryImage() {
           </View>
         );
       }}
-      
       renderZone={(zone, children, hover) => {
-
+       //console.log([zone.items?.[0].imgPath])
+       console.log([zone.items])
         return (
           <View
             style={{
@@ -137,7 +142,10 @@ export default function TryImage() {
             }}
           >
             <Text styles={styles.dragZoneTextStyle}>{zone.text}</Text>
-            {children}
+            {children && <View style={styles.dragItemStyle}>
+            <Image source={zone.items?.[0].imgPath} style={{width: 30, height: 30}} />
+            <Text style={styles.dragItemTextStyle}>{zone.items?.[0].text}</Text>
+          </View>}
           </View>
         );
       }}
@@ -182,6 +190,7 @@ const styles = StyleSheet.create({
     color: "#011F3B",
     fontWeight: "700",
     textAlign: "center",
+    width: 100
   },
   dragZoneStyle: {
     borderColor: "#F39200",
