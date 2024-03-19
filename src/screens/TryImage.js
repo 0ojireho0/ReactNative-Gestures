@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, Button, TextInput } from "react-native";
 import DragAndDrop from "volkeno-react-native-drag-drop";
 import billGates from '../assets/bill_gates.jpg'
 import elonMusk from '../assets/elon_musk.jpg'
@@ -105,6 +105,7 @@ export default function TryImage() {
 
   const [showFolder, setShowFolder] = useState(false)
   const [getImages, setGetImages] = useState([])
+  const [draggedItem, setDraggedItem] = useState(null);
 
 
   const pressFolder = (imgItems) =>{
@@ -117,6 +118,20 @@ export default function TryImage() {
   const pressExitFolder = () =>{
     setShowFolder(false)
   }
+
+  const [showAddFolderModal, setShowAddFolderModal] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+
+  const createNewFolder = () => {
+    const newZone = {
+      id: zones.length + 1,
+      text: newFolderName,
+      items: [],
+    };
+    setZones([...zones, newZone]);
+    setShowAddFolderModal(false);
+    setNewFolderName("");
+  };
   
 
 
@@ -139,12 +154,9 @@ export default function TryImage() {
         setZones(zones);
       }}
       
-     
+      
       itemsInZoneStyle={styles.itemsInZoneStyle}
       renderItem={(item) => {
-    
-
-
         return (
           <View style={styles.dragItemStyle}>
             <Image source={item.imgPath} style={{width: 30, height: 30}} />
@@ -201,6 +213,26 @@ export default function TryImage() {
  
 
   </>}
+  <Button
+        title="Add Folder"
+        onPress={() => setShowAddFolderModal(true)}
+    />
+
+    
+{showAddFolderModal && (
+        <SafeAreaView style={styles.containerSafeAreaView}>
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Text>Enter Folder Name:</Text>
+            <TextInput
+              value={newFolderName}
+              onChangeText={setNewFolderName}
+              style={{ borderWidth: 1, padding: 10, margin: 10 }}
+            />
+            <Button title="Create Folder" onPress={createNewFolder} />
+            <Button title="Cancel" onPress={() => setShowAddFolderModal(false)} />
+          </View>
+        </SafeAreaView>
+      )}
       
 
   </>
