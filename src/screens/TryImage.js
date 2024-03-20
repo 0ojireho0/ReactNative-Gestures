@@ -90,22 +90,12 @@ export default function TryImage() {
   ])
 
 
-  const [zones, setZones] = useState([
-    {
-      id: 1,
-      text: "Test zone 1",
-     
-    },
-    {
-      id: 2,
-      text: "Test zone 2",
-    },
-  ]);
+  const [zones, setZones] = useState([]);
 
 
   const [showFolder, setShowFolder] = useState(false)
   const [getImages, setGetImages] = useState([])
-  const [draggedItem, setDraggedItem] = useState(null);
+
 
 
   const pressFolder = (imgItems) =>{
@@ -133,6 +123,7 @@ export default function TryImage() {
     setNewFolderName("");
   };
   
+  
 
 
   //console.log(showFolder)
@@ -153,15 +144,12 @@ export default function TryImage() {
         setItems(items);
         setZones(zones);
       }}
-      
-      
       itemsInZoneStyle={styles.itemsInZoneStyle}
       renderItem={(item) => {
         return (
           <View style={styles.dragItemStyle}>
             <Image source={item.imgPath} style={{width: 30, height: 30}} />
             <Text style={styles.dragItemTextStyle}>{item.text}</Text>
-            
           </View>
         );
       }}
